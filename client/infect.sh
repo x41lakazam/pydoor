@@ -2,6 +2,7 @@
 
 cd /tmp
 mkdir pydoor
+cd pydoor
 echo "Downloading inker"
 curl https://raw.githubusercontent.com/x41lakazam/pydoor/master/client/inker.py
 echo "Downloading pydoor"

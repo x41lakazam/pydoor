@@ -77,7 +77,7 @@ def generate_plist(method='daemon'):
 
     plist_fn = os.path.join(path_to_plist, PLIST_NAME)
     with open(plist_fn, 'w') as f:
-        f.write(plist_content())
+        f.write(plist_content(backd_path))
 
     if VERBOSE: print("Wrote plist:", plist_fn)
 

